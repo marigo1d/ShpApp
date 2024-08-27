@@ -1,9 +1,12 @@
 package com.example.shpapp.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Window;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -31,7 +34,13 @@ public class MainActivity extends AppCompatActivity {
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 //            return insets;
 //        });
+        statusBarColor();
         initRecyclerView();
+    }
+
+    private void statusBarColor() {
+        Window window = MainActivity.this.getWindow();
+        window.setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.purple_dark));
     }
 
     private void initRecyclerView() {
@@ -40,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(new PopularDomain("Smart Watch", "item_2", 10, 4.5, 450, "test"));
         items.add(new PopularDomain("Phone", "item_3", 3, 4.9, 800, "test"));
 
-        binding.PopularView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
+        binding.PopularView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.PopularView.setAdapter(new PopularAdapter(items));
     }
 }

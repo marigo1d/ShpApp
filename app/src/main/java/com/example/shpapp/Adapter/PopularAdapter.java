@@ -1,6 +1,7 @@
 package com.example.shpapp.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewhold
     @Override
     public PopularAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         this.binding = ViewholderPupListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        this.context = parent.getContext();
         return new Viewholder(this.binding);
     }
 
@@ -38,7 +40,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewhold
         binding.scoreTxt.setText("" + items.get(position).getScore());
 
         int drawableResourced = holder.itemView.getResources().getIdentifier(items.get(position).getPicUrl()
-        , "drawable", holder.itemView.getContext().getPackageName());
+        , "drawable", context.getPackageName());  // 待修改
 
         Glide.with(context)
                 .load(drawableResourced)
@@ -48,7 +50,6 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewhold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
             }
         });
     }
@@ -58,7 +59,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewhold
         return items.size();
     }
 
-    public class Viewholder extends RecyclerView.ViewHolder{
+    public static class Viewholder extends RecyclerView.ViewHolder{
         public Viewholder(@NonNull ViewholderPupListBinding binding) {
             super(binding.getRoot());
         }
