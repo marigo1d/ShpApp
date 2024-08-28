@@ -36,10 +36,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/welcome"
-                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:textColor="@color/white" />
+                         />
 
                     <TextView
                         android:id="@+id/textView1"
@@ -399,6 +400,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/cartBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"

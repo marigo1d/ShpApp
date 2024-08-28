@@ -1,20 +1,22 @@
 package com.example.shpapp.Domain;
 
-public class PopularDomain {
+import java.io.Serializable;
+
+public class PopularDomain implements Serializable {
     private String title;
     private String picUrl;
     private int review;
     private double score;
-    private int numberInChart;
-    private double prices;
+    private int numberInCart;
+    private double price;
     private String description;
 
-    public PopularDomain(String title, String picUrl, int review, double score, double prices, String description) {
+    public PopularDomain(String title, String picUrl, int review, double score, double price, String description) {
         this.title = title;
         this.picUrl = picUrl;
         this.review = review;
         this.score = score;
-        this.prices = prices;
+        this.price = price;
         this.description = description;
     }
 
@@ -34,20 +36,20 @@ public class PopularDomain {
         this.picUrl = picUrl;
     }
 
-    public double getPrices() {
-        return prices;
+    public double getPrice() {
+        return price;
     }
 
-    public void setPrices(double prices) {
-        this.prices = prices;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public int getNumberInChart() {
-        return numberInChart;
+    public int getNumberInCart() {
+        return numberInCart;
     }
 
-    public void setNumberInChart(int numberInChart) {
-        this.numberInChart = numberInChart;
+    public void setNumberInCart(int numberInChart) {
+        this.numberInCart = numberInChart;
     }
 
     public double getScore() {
