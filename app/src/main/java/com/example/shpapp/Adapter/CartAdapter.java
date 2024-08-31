@@ -1,9 +1,7 @@
 package com.example.shpapp.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,26 +9,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
-import com.example.shpapp.Activity.DetailActivity;
-import com.example.shpapp.Domain.PopularDomain;
+import com.example.shpapp.Domain.ItemDomain;
 import com.example.shpapp.Helper.ChangeNumberItemsListener;
-import com.example.shpapp.Helper.ManagmentCart;
+import com.example.shpapp.Domain.ShoppingCart;
 import com.example.shpapp.databinding.ViewholderCartBinding;
 
 import java.util.ArrayList;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Viewholder> {
-    ArrayList<PopularDomain> items;
+    ArrayList<ItemDomain> itemDomains;
     Context context;
     ViewholderCartBinding binding;
     ChangeNumberItemsListener changeNumberItemsListener;
-    ManagmentCart managmentCart;
+    ShoppingCart shoppingCart;
 
-    public CartAdapter(ArrayList<PopularDomain> items, Context context, ChangeNumberItemsListener changeNumberItemsListener) {
-        this.items = items;
+    public CartAdapter(ArrayList<ItemDomain> itemDomains, Context context, ChangeNumberItemsListener changeNumberItemsListener) {
+        this.itemDomains = itemDomains;
         this.context = context;
         this.changeNumberItemsListener = changeNumberItemsListener;
-        managmentCart = new ManagmentCart(context);
+        shoppingCart = ShoppingCart.getInstance(context.getApplicationContext());
     }
 
     @NonNull
@@ -42,12 +39,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Viewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.Viewholder holder, int position) {
-        binding.titleTxt.setText(items.get(position).getTitle());
-        binding.feeEachItem.setText("$" + items.get(position).getPrice());
-        binding.totalEachItem.setText("$" + Math.round(items.get(position).getNumberInCart() * items.get(position).getPrice()));
-        binding.numPerItemTxt.setText(String.valueOf(items.get(position).getNumberInCart()));
+        binding.titleTxt.setText(itemDomains.get(position).getTradename());
+        binding.feeEachItem.setText("$" + itemDomains.get(position).getPrice());
+        binding.totalEachItem.setText("$" + Math.round(itemDomains.get(position).getQuantity() * itemDomains.get(position).getPrice()));
+        binding.numPerItemTxt.setText(String.valueOf(itemDomains.get(position).getQuantity()));
 
-        int drawableResourced = holder.itemView.getResources().getIdentifier(items.get(position).getPicUrl()
+        int drawableResourced = holder.itemView.getResources().getIdentifier(itemDomains.get(position).getPicUrl()
         , "drawable", context.getPackageName());  // 待修改
 
         Glide.with(context)
@@ -55,12 +52,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Viewholder> {
                 .transform(new GranularRoundedCorners(30, 30, 0, 0))
                 .into(binding.pic);
 
-        binding.plusCartBtn.setOnClickListener(view -> managmentCart.plusNumberItem(items, position, () -> {
+        binding.plusCartBtn.setOnClickListener(view -> shoppingCart.plusNumberItem(itemDomains, position, () -> {
             notifyDataSetChanged();
             changeNumberItemsListener.change();
         }));
 
-        binding.minusCartBtn.setOnClickListener(view -> managmentCart.minusNumberItem(items, position, () -> {
+        binding.minusCartBtn.setOnClickListener(view -> shoppingCart.minusNumberItem(itemDomains, position, () -> {
             notifyDataSetChanged();
             changeNumberItemsListener.change();
         }));
@@ -68,7 +65,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Viewholder> {
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return itemDomains.size();
     }
 
     public static class Viewholder extends RecyclerView.ViewHolder{

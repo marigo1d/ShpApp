@@ -1,22 +1,12 @@
 package com.example.shpapp.Activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.shpapp.Adapter.PopularAdapter;
-import com.example.shpapp.Domain.PopularDomain;
-import com.example.shpapp.R;
+import com.example.shpapp.Domain.ItemDomain;
 import com.example.shpapp.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
@@ -46,12 +36,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initPopularRecyclerView() {
-        ArrayList<PopularDomain> items = new ArrayList<>();
-        items.add(new PopularDomain("T-shirt black", "item_1", 15, 4, 500, "test"));
-        items.add(new PopularDomain("Smart Watch", "item_2", 10, 4.5, 450, "test"));
-        items.add(new PopularDomain("Phone", "item_3", 3, 4.9, 800, "test"));
+        ArrayList<ItemDomain> itemDomains = new ArrayList<>();
+        // 待修改，通过后端获取信息
+        itemDomains.add(new ItemDomain("T-shirt black", "item_1", 15, 4, 500, "test"));
+        itemDomains.add(new ItemDomain("Smart Watch", "item_2", 10, 4.5, 450, "test"));
+        itemDomains.add(new ItemDomain("Phone", "item_3", 3, 4.9, 800, "test"));
 
         binding.PopularView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        binding.PopularView.setAdapter(new PopularAdapter(items));
+        binding.PopularView.setAdapter(new PopularAdapter(itemDomains));
     }
 }

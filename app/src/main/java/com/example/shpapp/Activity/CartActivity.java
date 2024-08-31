@@ -3,22 +3,16 @@ package com.example.shpapp.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.shpapp.Adapter.CartAdapter;
 import com.example.shpapp.Helper.ChangeNumberItemsListener;
-import com.example.shpapp.Helper.ManagmentCart;
-import com.example.shpapp.R;
+import com.example.shpapp.Domain.ShoppingCart;
 import com.example.shpapp.databinding.ActivityCartBinding;
 
 public class CartActivity extends BaseActivity {
     private ActivityCartBinding binding;
-    private ManagmentCart managmentCart;
+    private ShoppingCart shoppingCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +20,14 @@ public class CartActivity extends BaseActivity {
         binding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        managmentCart = new ManagmentCart(this);
+        shoppingCart = ShoppingCart.getInstance(getApplicationContext());
 
         setVariable();
         initList();
     }
 
     private void initList() {
-        if (managmentCart.getListCart().isEmpty()){
+        if (shoppingCart.getListCart().isEmpty()){
             binding.emptyTxt.setVisibility(View.VISIBLE);
             binding.scroll.setVisibility(View.GONE);
         } else {
@@ -42,16 +36,16 @@ public class CartActivity extends BaseActivity {
         }
 
         binding.cartView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        binding.cartView.setAdapter(new CartAdapter(managmentCart.getListCart(), this, () -> calculatorOnCart()));
+        binding.cartView.setAdapter(new CartAdapter(shoppingCart.getListCart(), this, () -> calculatorOnCart()));
     }
 
     private void calculatorOnCart()
     {
         double percentTax = 0.02;
         double delivery = 10;
-        double tax = Math.round(managmentCart.getTotalFee() + percentTax * 100) / 100;
-        double total = Math.round((managmentCart.getTotalFee() + tax + delivery) * 100) / 100;
-        double itemTotal = Math.round(managmentCart.getTotalFee() * 100) / 100;
+        double tax = Math.round(shoppingCart.getTotalFee() + percentTax * 100) / 100;
+        double total = Math.round((shoppingCart.getTotalFee() + tax + delivery) * 100) / 100;
+        double itemTotal = Math.round(shoppingCart.getTotalFee() * 100) / 100;
 
         binding.totalFeeTxt.setText("$" + itemTotal);
         binding.taxTxt.setText("$" + tax);

@@ -3,7 +3,6 @@ package com.example.shpapp.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,18 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
 import com.example.shpapp.Activity.DetailActivity;
-import com.example.shpapp.Domain.PopularDomain;
+import com.example.shpapp.Domain.ItemDomain;
 import com.example.shpapp.databinding.ViewholderPupListBinding;
 
 import java.util.ArrayList;
 
 public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewholder> {
-    ArrayList<PopularDomain> items;
+    ArrayList<ItemDomain> itemDomains;
     Context context;
     ViewholderPupListBinding binding;
 
-    public PopularAdapter(ArrayList<PopularDomain> items) {
-        this.items = items;
+    public PopularAdapter(ArrayList<ItemDomain> itemDomains) {
+        this.itemDomains = itemDomains;
     }
 
     @NonNull
@@ -36,12 +35,12 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewhold
 
     @Override
     public void onBindViewHolder(@NonNull PopularAdapter.Viewholder holder, int position) {
-        binding.titleTxt.setText(items.get(position).getTitle());
-        binding.feeTxt.setText("$" + items.get(position).getPrice());
-        binding.scoreTxt.setText("" + items.get(position).getScore());
-        binding.reviewTxt.setText("" + items.get(position).getReview());
+        binding.titleTxt.setText(itemDomains.get(position).getTradename());
+        binding.feeTxt.setText("$" + itemDomains.get(position).getPrice());
+        binding.scoreTxt.setText("" + itemDomains.get(position).getScore());
+        binding.reviewTxt.setText("" + itemDomains.get(position).getReview());
 
-        int drawableResourced = holder.itemView.getResources().getIdentifier(items.get(position).getPicUrl()
+        int drawableResourced = holder.itemView.getResources().getIdentifier(itemDomains.get(position).getPicUrl()
         , "drawable", context.getPackageName());  // 待修改
 
         Glide.with(context)
@@ -51,14 +50,14 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.Viewhold
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, DetailActivity.class);
-            intent.putExtra("object", items.get(position));
+            intent.putExtra("object", itemDomains.get(position));
             context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return itemDomains.size();
     }
 
     public static class Viewholder extends RecyclerView.ViewHolder{
