@@ -35,11 +35,9 @@ public class DetailActivity extends BaseActivity {
         binding.titleTxt.setText(object.getTradename());
         binding.priceTxt.setText("$" + object.getPrice());
         binding.descriptionTxt.setText(object.getDescription());
-        binding.reviewTxt.setText(object.getReview() + "");
         binding.ratingTxt.setText(object.getScore() + "");
 
         binding.addToCartBtn.setOnClickListener(view -> {
-            object.setQuantity(numberOrder);
             shoppingCart.addItem(object);
         });
 

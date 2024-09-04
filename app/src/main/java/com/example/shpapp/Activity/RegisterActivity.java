@@ -3,40 +3,31 @@ package com.example.shpapp.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import com.example.shpapp.R;
+import com.example.shpapp.api.Api;
+import com.example.shpapp.api.ApiConfig;
+import com.example.shpapp.api.TtitCallback;
+import com.example.shpapp.databinding.ActivityRegisterBinding;
+import com.example.shpapp.util.StringUtils;
 
 import java.util.HashMap;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
-    private EditText etAccount;
-    private EditText etPwd;
-    private EditText etRptPwd;
-    private Button btnRegister;
+    private ActivityRegisterBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        etAccount = findViewById(R.id.register_username_input);
-        etPwd = findViewById(R.id.register_password_input);
-        etRptPwd = findViewById(R.id.register_password_rpt_input);
-        btnRegister = findViewById(R.id.register_button);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        binding.registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String account = etAccount.getText().toString().trim();
-                String pwd = etPwd.getText().toString().trim();
-                String rptPwd = etRptPwd.getText().toString().trim();
+                String account = binding.registerUsernameInput.getText().toString().trim();
+                String pwd = binding.registerPwdInput.getText().toString().trim();
+                String rptPwd = binding.registerPwdRptInput.getText().toString().trim();
                 Register(account, pwd, rptPwd);
             }
         });
@@ -56,11 +47,12 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        String hashedPassword = BCrypt.withDefaults().hashToString(12, pwd.toCharArray());
+//        String hashedPassword = BCrypt.withDefaults().hashToString(12, pwd.toCharArray());
 
         HashMap<String, Object> m = new HashMap<>();
         m.put("Username", account);
-        m.put("Password", hashedPassword);
+//        m.put("Password", hashedPassword);
+        m.put("Password", pwd);
         Api.config(ApiConfig.REGISTER_URL, m);
         Api.postRequest(new TtitCallback() {
             @Override

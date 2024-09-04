@@ -6,7 +6,6 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.shpapp.Adapter.CartAdapter;
-import com.example.shpapp.Helper.ChangeNumberItemsListener;
 import com.example.shpapp.Domain.ShoppingCart;
 import com.example.shpapp.databinding.ActivityCartBinding;
 

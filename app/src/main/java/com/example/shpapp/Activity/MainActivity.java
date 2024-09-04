@@ -2,47 +2,67 @@ package com.example.shpapp.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
+import com.example.shpapp.api.Api;
+import com.example.shpapp.api.ApiConfig;
+import com.example.shpapp.api.TtitCallback;
+import com.example.shpapp.databinding.ActivityLoginBinding;
+import com.example.shpapp.util.StringUtils;
 
-import com.example.shpapp.Adapter.PopularAdapter;
-import com.example.shpapp.Domain.ItemDomain;
-import com.example.shpapp.databinding.ActivityMainBinding;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends BaseActivity {
-    ActivityMainBinding binding;  // 针对xml文件，将使用xml驼峰文件名+Bindng的方式生成对应的java类
+
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        EdgeToEdge.enable(this);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        setContentView(R.layout.activity_main);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
-        initPopularRecyclerView();
-        initBottomNavigation();
+
+
+        binding.loginBtn.setOnClickListener(view -> {
+            String account = binding.loginUsernameInput.getText().toString().trim();
+            String pwd = binding.loginPwdInput.getText().toString().trim();
+            login(account, pwd);
+        });
+
+        binding.loginRegisterBtn.setOnClickListener(view -> {
+            startActivity(new Intent(this, RegisterActivity.class));
+        });
     }
 
-    private void initBottomNavigation() {
-        binding.cartBtn.setOnClickListener(view -> startActivity(new Intent(this, CartActivity.class)));
+    private void login(String account, String pwd) {
+        if(StringUtils.isEmpty(account)) {
+            showToast("Please Input Username~");
+            return;
+        }
+        if(StringUtils.isEmpty(pwd)) {
+            showToast("Please Input Password~");
+            return;
+        }
+
+//        String hashedPassword = BCrypt.withDefaults().hashToString(12, pwd.toCharArray());
+
+        HashMap<String, Object> m = new HashMap<>();
+        m.put("Username", account);
+//        m.put("Password", hashedPassword);
+        m.put("Password", pwd);
+        Api.config(ApiConfig.LOGIN_URL, m);
+        Api.postRequest(new TtitCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Log.i("onSuccess", response);
+            }
+
+            @Override
+            public void onFailure(String response) {
+                Log.e("onFailure", response);
+            }
+        });
 
     }
 
-    private void initPopularRecyclerView() {
-        ArrayList<ItemDomain> itemDomains = new ArrayList<>();
-        // 待修改，通过后端获取信息
-        itemDomains.add(new ItemDomain("T-shirt black", "item_1", 15, 4, 500, "test"));
-        itemDomains.add(new ItemDomain("Smart Watch", "item_2", 10, 4.5, 450, "test"));
-        itemDomains.add(new ItemDomain("Phone", "item_3", 3, 4.9, 800, "test"));
-
-        binding.PopularView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        binding.PopularView.setAdapter(new PopularAdapter(itemDomains));
-    }
 }

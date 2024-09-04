@@ -39,8 +39,8 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.glide
     implementation libs.gson
+    implementation libs.security.spring.security.crypto
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
-
 }
